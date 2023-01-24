@@ -18,52 +18,42 @@ import jakarta.persistence.Id;
 public class StudentServiceImpl implements StudentService {
 	@Autowired
 	StudentRepository studentRepository;
+
+	@Override
 	public Student saveStudent(StudentDTO studentDTO) {
-		Student student=Student.builder()
-				.studentName(studentDTO.getStudentName())
-				.studentAge(studentDTO.getStudentAge())
-				.studentContactNumber(studentDTO.getContactNumber())
-				.build();
-			return studentRepository.save(student);
+		Student student=Student.builder().name(studentDTO.getName()).age(studentDTO.getAge()).contactnumber(studentDTO.getContactNumber()).build();
+		return studentRepository.save(student);
 	}
 
-	
-	public String deleteStudent(Integer id) {
-		studentRepository.deleteById(id);
-		return "Deleted one record successully";
+	@Override
+	public Student getStudentById(int studentId) {
+		return studentRepository.findById(studentId).get();
 	}
 
-	
-	public String updateStudent(StudentDTO studentDTO, Integer id) {
-		Student student=studentRepository.findById(id).get();
-		Student student1=Student.builder()
-				.studentName(studentDTO.getStudentName())
-				.studentAge(studentDTO.getStudentAge());
-				.studentContactNumber(studentDTO.getContactNumber());
-				.build();
+	@Override
+	public List<Student> displayAll() {
+		return studentRepository.findAll();
+	}
+
+	@Override
+	public String updateStudent(int studentId, StudentDTO params) {
+		Student student=studentRepository.findById(studentId).get();
+		student.studentName(params.getStudentName());
+		student.studentAge(params.getStudentAge());
+		student.studentContactNumber(params.getContactNumber());
 		studentRepository.save(student);
 		return "Updated successfully";
+			}
+
+	@Override
+	public String deleteStudentById(int studentId) {
+		studentRepository.deleteById(studentId);
+		return "The student id is deleted"+studentId;
 	}
 
-	
-	public Student getStudentById(Integer id) {
-		
-		return studentRepository.findById(id).get();
-	}
-
-	
-	public List<Student> getAllStudents() {
-		return studentRepository.findAll();
-		
-	}
-
-	
+	@Override
 	public String deleteAllStudents() {
-		
-		 studentRepository.deleteAll();
+		studentRepository.deleteAll();
 		 return "Deleted successfully";
 	}
 }
-
-
-	

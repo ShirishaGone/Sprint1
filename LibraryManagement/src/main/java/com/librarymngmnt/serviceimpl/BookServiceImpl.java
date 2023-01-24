@@ -14,53 +14,49 @@ import jakarta.persistence.Id;
 
 @Service
 public class BookServiceImpl implements BookService {
-    @Autowired
+	@Autowired
+	
     BookRepository  bookRepository;
-    
+	
 	@Override
 	public Book saveBook(BookDTO bookDTO) {
-		Book book= Book.builder()
-				       .bookId(bookDTO.getBookId())
-				       .bookName(bookDTO.getBookName())
-				       .bookAuthor(bookDTO.getBookAuthor())
-				       .bookYearOfPublication(bookDTO.getBookYearOfPublication())
-				       .bookPrice(bookDTO.getBookPrice())
-				       .build();
+		Book book=Book.builder().name(bookDTO.getName()).author(bookDTO.getAuthor()).yearofpublication(bookDTO.getYearOfPublication()).price(bookDTO.getPrice).build();
 		return bookRepository.save(book);
-	}
-	public Book getBookById() {
 		
+	}
+
+	@Override
+	public Book getBookById(int bookId) {
 		return bookRepository.findById(bookId).get();
 	}
 
 	@Override
 	public List<Book> displayAll() {
-	
 		return bookRepository.findAll();
 	}
 
-	public String updateBook(BookDTO bookDTO, int bookId) {
-		Book book=Book.builder()
-	       .bookName(bookDTO.getBookName());
-	       .bookAuthor(bookDTO.getBookAuthor());
-	       .bookYearOfPublication(bookDTO.getBookYearOfPublication());
-	       .bookPrice(bookDTO.getBookPrice());
-	       .Student(bookDTO.getStudent())
-	       .build();
-	       
-	       bookRepository.save(book);
-		   return"Book record updated successfully" ;
+
+	@Override
+	public String updateBook(BookDTO params, int bookId) {
+	Book book=bookRepository.findById(bookId).get();
+		book.setName(params.getName());
+		book.setAuthor(params.getAuthor());
+		book.setYearOfPublication(params.getYearOfPublication());
+		book.setPrice(params.getPrice());
+	    bookRepository.save(book);
+	    return "updated successfully";
 	}
 
 	@Override
 	public String deleteBookById(int bookId) {
 		bookRepository.deleteById(bookId);
-		return "Book record id"+bookId+"deleted successfully";
+		return "The book id is deleted"+bookId;
 	}
+
 	@Override
 	public String deleteAllBooks() {
 		bookRepository.deleteAll();
 		return "Deleted successfully";
 	}
-	
-}
+			}
+    

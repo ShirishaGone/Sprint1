@@ -2,6 +2,7 @@ package com.librarymngmnt.dto;
 
 import com.librarymngmnt.entities.Student;
 
+
 import jakarta.validation.constraints.Email;
 
 import jakarta.validation.constraints.Max;
@@ -25,7 +26,6 @@ public class BookDTO {
 	@NotNull(message = "Bookprice cannot be null")
 	private String price;
 	
-	private Student student;
+	
+
 }
-
-
